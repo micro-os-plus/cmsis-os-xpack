@@ -1721,3 +1721,4 @@ osMailFree (osMailQId mail_id, void* mail)
 
 #endif /* defined(__ARM_EABI__) */
 
+// ----------------------------------------------------------------------------
