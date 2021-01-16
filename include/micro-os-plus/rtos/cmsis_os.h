@@ -1330,6 +1330,6 @@ const osMailQDef_t os_mailQ_def_##name = { \
 }
 #endif
 
-#endif  /* CMSIS_OS_H_ */
+#endif // CMSIS_OS_H_ 
 
  // ----------------------------------------------------------------------------

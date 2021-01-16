@@ -1081,7 +1081,7 @@ osSemaphoreDelete (osSemaphoreId semaphore_id)
   return osOK;
 }
 
-#endif /* Semaphore available */
+#endif // Semaphore available
 
 // ----------------------------------------------------------------------------
 //  ==== Memory Pool Management Functions ====
@@ -1196,7 +1196,7 @@ osPoolFree (osPoolId pool_id, void* block)
     }
 }
 
-#endif /* Memory Pool Management available */
+#endif // Memory Pool Management available
 
 // ----------------------------------------------------------------------------
 //  ==== Message Queue Management Functions ====
@@ -1420,7 +1420,7 @@ osMessageGet (osMessageQId queue_id, uint32_t millisec)
 
 #pragma GCC diagnostic pop
 
-#endif /* Message Queues available */
+#endif // Message Queues available
 
 // ----------------------------------------------------------------------------
 //  ==== Mail Queue Management Functions ====
@@ -1724,7 +1724,7 @@ osMailFree (osMailQId mail_id, void* mail)
   return osPoolFree (&(mail_id->pool), mail);
 }
 
-#endif /* Mail Queues available */
+#endif // Mail Queues available
 
 // ----------------------------------------------------------------------------
 
@@ -1732,6 +1732,6 @@ osMailFree (osMailQId mail_id, void* mail)
 
 // ----------------------------------------------------------------------------
 
-#endif /* defined(__ARM_EABI__) */
+#endif // defined(__ARM_EABI__)
 
 // ----------------------------------------------------------------------------
