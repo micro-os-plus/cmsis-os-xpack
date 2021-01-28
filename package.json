@@ -8,14 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/micro-os-plus/cmsis-os-xpack.git"
+    "url": "git+https://github.com/micro-os-plus/cmsis-os-xpack.git/"
   },
   "bugs": {
     "url": "https://github.com/micro-os-plus/cmsis-os-xpack/issues/"
   },
   "homepage": "https://github.com/micro-os-plus/cmsis-os-xpack/",
   "keywords": [
-    "xpack"
+    "xpack",
+    "cmsis",
+    "c++",
+    "micro-os-plus"
   ],
   "author": {
     "name": "Liviu Ionescu",
