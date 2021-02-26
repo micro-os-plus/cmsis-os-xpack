@@ -33,11 +33,13 @@ if (NOT TARGET micro-os-plus-cmsis-os-interface)
 
   # ---------------------------------------------------------------------------
 
+  file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "${xpack_current_folder}/src/*.c*")
+
   target_sources(
     micro-os-plus-cmsis-os-interface
 
     INTERFACE
-      ${xpack_current_folder}/src/cmsis-os-c-wrapper.cpp
+      ${source_files}
   )
 
   target_include_directories(
