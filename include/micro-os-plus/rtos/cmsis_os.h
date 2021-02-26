@@ -120,7 +120,7 @@
 #define osFeature_SysTick      1 ///< osKernelSysTick functions: 1=available, 0=not available
 
 // Include the µOS++ C API structures declarations.
-#include <micro-os-plus/rtos/os-c-decls.h>
+#include <micro-os-plus/rtos/declarations-c.h>
 
 #include <stdint.h>
 #include <stddef.h>
