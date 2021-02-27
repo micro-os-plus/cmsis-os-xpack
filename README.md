@@ -1,9 +1,9 @@
 [![license](https://img.shields.io/github/license/micro-os-plus/cmsis-os-xpack)](https://github.com/micro-os-plus/cmsis-os-xpack/blob/xpack/LICENSE)
 [![CI on Push](https://github.com/micro-os-plus/cmsis-os-xpack/workflows/CI%20on%20Push/badge.svg)](https://github.com/micro-os-plus/cmsis-os-xpack/actions?query=workflow%3A%22CI+on+Push%22)
 
-# A source xPack with the CMSIS OS compatibility layer
+# A source xPack with the CMSIS RTOS compatibility layer
 
-This project includes files to define the CMSIS OS on top of µOS++.
+This project includes files to define the CMSIS RTOS on top of µOS++.
 
 The project is hosted on GitHub as
 [micro-os-plus/cmsis-os-xpack](https://github.com/micro-os-plus/cmsis-os-xpack).
@@ -86,11 +86,11 @@ TBD
 
 ### Status
 
-The µOS++ CMSIS OS v1 is fully functional.
+The µOS++ CMSIS RTOS v1 is fully functional.
 
 ### Limitations
 
-Support for CMSIS OS v2 will be added in a later release.
+Support for CMSIS RTOS v2 will be added in a later release.
 
 ### Build & integration info
 

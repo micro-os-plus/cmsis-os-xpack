@@ -26,8 +26,8 @@
  */
 
 /*
- * The code provides an implementation of the CMSIS OS C API,
- * on top of the µOS++ C++ definitions.
+ * The code provides an implementation of the CMSIS RTOS C API,
+ * on top of the µOS++ RTOS C++ definitions.
  */
 
 #if defined(__ARM_EABI__)
