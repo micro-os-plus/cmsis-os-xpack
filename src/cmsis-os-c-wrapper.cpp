@@ -627,7 +627,7 @@ osSignalClear (osThreadId thread_id, int32_t signals)
 
   flags::mask_t sig;
 
-#if defined(OS_INCLUDE_RTOS_THREAD_PUBLIC_FLAGS_CLEAR)
+#if defined(MICRO_OS_PLUS_INCLUDE_RTMICRO_OS_PLUS_THREAD_PUBLIC_FLAGS_CLEAR)
   ((thread*)(thread_id))->flags_clear ((flags::mask_t)signals, &sig);
 #else
   assert (((thread*)(thread_id)) == &this_thread::thread ());
