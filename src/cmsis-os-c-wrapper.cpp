@@ -43,7 +43,7 @@ using namespace os::rtos;
 
 // ----------------------------------------------------------------------------
 
-#include <micro-os-plus/rtos/cmsis_os.h>
+#include <micro-os-plus/cmsis_os.h>
 
 // ----------------------------------------------------------------------------
 //  ==== Kernel Control Functions ====
