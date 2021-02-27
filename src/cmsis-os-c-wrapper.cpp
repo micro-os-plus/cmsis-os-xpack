@@ -38,8 +38,8 @@
 
 // ----------------------------------------------------------------------------
 
-using namespace os;
-using namespace os::rtos;
+using namespace micro_os_plus;
+using namespace micro_os_plus::rtos;
 
 // ----------------------------------------------------------------------------
 
