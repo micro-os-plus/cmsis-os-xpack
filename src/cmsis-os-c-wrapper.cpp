@@ -934,12 +934,12 @@ osSemaphoreCreate (const osSemaphoreDef_t* semaphore_def, int32_t count)
     }
 
   semaphore::attributes attr;
-  attr.semaphore_initial_value = (semaphore::count_t)count;
+  attr.initial_value = (semaphore::count_t)count;
   // The logic is very strange, the CMSIS expects both the max-count to be the
   // same as count, and also to accept a count of 0, which leads to
   // useless semaphores. We patch this behaviour in the wrapper, the main
   // object uses a more realistic max_value.
-  attr.semaphore_max_value
+  attr.max_value
       = (semaphore::count_t) (count == 0 ? osFeature_Semaphore : count);
 
   new ((void*)semaphore_def->data) semaphore (semaphore_def->name, attr);
