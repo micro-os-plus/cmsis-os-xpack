@@ -753,8 +753,8 @@ osMutexCreate (const osMutexDef_t* mutex_def)
     }
 
   mutex::attributes attr;
-  attr.mx_type = mutex::type::recursive;
-  attr.mx_protocol = mutex::protocol::inherit;
+  attr.mutex_type = mutex::type::recursive;
+  attr.mutex_protocol = mutex::protocol::inherit;
 
   new ((void*)mutex_def->data) mutex (mutex_def->name, attr);
 
