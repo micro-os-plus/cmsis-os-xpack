@@ -212,15 +212,15 @@ extern "C"
   typedef micro_os_plus_semaphore_t osSemaphore;
   typedef micro_os_plus_semaphore_attributes_t osSemaphoreAttr;
 
-  typedef micro_os_plus_mempool_t osPool;
-  typedef micro_os_plus_mempool_attributes_t osPoolAttr;
+  typedef micro_os_plus_memory_pool_t osPool;
+  typedef micro_os_plus_memory_pool_attributes_t osPoolAttr;
 
   typedef micro_os_plus_mqueue_t osMessageQ;
   typedef micro_os_plus_mqueue_attributes_t osMessageQAttr;
 
   typedef struct micro_os_plus_mail_queue_s
   {
-    micro_os_plus_mempool_t pool;
+    micro_os_plus_memory_pool_t pool;
     micro_os_plus_mqueue_t queue;
   } micro_os_plus_mail_queue_t;
 
