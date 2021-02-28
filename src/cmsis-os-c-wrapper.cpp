@@ -193,9 +193,9 @@ osThreadCreate (const osThreadDef_t* thread_def, void* arguments)
                                            + sizeof (uint64_t) - 1)
                                           / sizeof (uint64_t))];
             }
-          new (th)
-              thread (thread_def->name, (thread::func_t)thread_def->pthread,
-                      arguments, attributes);
+          new (th) thread (thread_def->name,
+                           (thread::function_t)thread_def->pthread, arguments,
+                           attributes);
 
           // No need to yield here, already done by constructor.
           return reinterpret_cast<osThreadId> (th);
@@ -486,7 +486,7 @@ osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type,
   attributes.timer_type = (timer::type_t)type;
 
   new ((void*)timer_def->data)
-      timer (timer_def->name, (timer::func_t)timer_def->ptimer,
+      timer (timer_def->name, (timer::function_t)timer_def->ptimer,
              (timer::func_args_t)arguments, attributes);
 
   return reinterpret_cast<osTimerId> (timer_def->data);
