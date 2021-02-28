@@ -168,9 +168,9 @@ osThreadCreate (const osThreadDef_t* thread_def, void* arguments)
       return nullptr;
     }
 
-  thread::attributes attr;
-  attr.priority = thread_def->tpriority;
-  attr.stack_size_bytes = thread_def->stacksize;
+  thread::attributes attributes;
+  attributes.priority = thread_def->tpriority;
+  attributes.stack_size_bytes = thread_def->stacksize;
 
   // Creating thread with invalid priority should fail (validator requirement).
   if (thread_def->tpriority >= osPriorityError)
@@ -185,9 +185,9 @@ osThreadCreate (const osThreadDef_t* thread_def, void* arguments)
       if (th->state () == thread::state::undefined
           || th->state () == thread::state::destroyed)
         {
-          if (attr.stack_size_bytes > 0)
+          if (attributes.stack_size_bytes > 0)
             {
-              attr.stack_address
+              attributes.stack_address
                   = &thread_def->stack[(i)
                                        * ((thread_def->stacksize
                                            + sizeof (uint64_t) - 1)
@@ -195,7 +195,7 @@ osThreadCreate (const osThreadDef_t* thread_def, void* arguments)
             }
           new (th)
               thread (thread_def->name, (thread::func_t)thread_def->pthread,
-                      arguments, attr);
+                      arguments, attributes);
 
           // No need to yield here, already done by constructor.
           return reinterpret_cast<osThreadId> (th);
@@ -482,12 +482,12 @@ osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type,
       return nullptr;
     }
 
-  timer::attributes attr;
-  attr.timer_type = (timer::type_t)type;
+  timer::attributes attributes;
+  attributes.timer_type = (timer::type_t)type;
 
   new ((void*)timer_def->data)
       timer (timer_def->name, (timer::func_t)timer_def->ptimer,
-             (timer::func_args_t)arguments, attr);
+             (timer::func_args_t)arguments, attributes);
 
   return reinterpret_cast<osTimerId> (timer_def->data);
 }
@@ -753,11 +753,11 @@ osMutexCreate (const osMutexDef_t* mutex_def)
       return nullptr;
     }
 
-  mutex::attributes attr;
-  attr.type = mutex::type::recursive;
-  attr.protocol = mutex::protocol::inherit;
+  mutex::attributes attributes;
+  attributes.type = mutex::type::recursive;
+  attributes.protocol = mutex::protocol::inherit;
 
-  new ((void*)mutex_def->data) mutex (mutex_def->name, attr);
+  new ((void*)mutex_def->data) mutex (mutex_def->name, attributes);
 
   return reinterpret_cast<osMutexId> (mutex_def->data);
 }
@@ -934,16 +934,16 @@ osSemaphoreCreate (const osSemaphoreDef_t* semaphore_def, int32_t count)
       return nullptr;
     }
 
-  semaphore::attributes attr;
-  attr.initial_value = (semaphore::count_t)count;
+  semaphore::attributes attributes;
+  attributes.initial_value = (semaphore::count_t)count;
   // The logic is very strange, the CMSIS expects both the max-count to be the
   // same as count, and also to accept a count of 0, which leads to
   // useless semaphores. We patch this behaviour in the wrapper, the main
   // object uses a more realistic max_value.
-  attr.max_value
+  attributes.max_value
       = (semaphore::count_t) (count == 0 ? osFeature_Semaphore : count);
 
-  new ((void*)semaphore_def->data) semaphore (semaphore_def->name, attr);
+  new ((void*)semaphore_def->data) semaphore (semaphore_def->name, attributes);
 
   return reinterpret_cast<osSemaphoreId> (semaphore_def->data);
 }
@@ -1109,13 +1109,13 @@ osPoolCreate (const osPoolDef_t* pool_def)
       return nullptr;
     }
 
-  memory_pool::attributes attr;
-  attr.arena_address = pool_def->pool;
-  attr.arena_size_bytes = pool_def->pool_sz;
+  memory_pool::attributes attributes;
+  attributes.arena_address = pool_def->pool;
+  attributes.arena_size_bytes = pool_def->pool_sz;
 
   new ((void*)pool_def->data)
       memory_pool (pool_def->name, (std::size_t)pool_def->items,
-                   (std::size_t)pool_def->item_sz, attr);
+                   (std::size_t)pool_def->item_sz, attributes);
 
   return reinterpret_cast<osPoolId> (pool_def->data);
 }
@@ -1225,13 +1225,13 @@ osMessageCreate (const osMessageQDef_t* queue_def,
       return nullptr;
     }
 
-  message_queue::attributes attr;
-  attr.arena_address = queue_def->queue;
-  attr.arena_size_bytes = queue_def->queue_sz;
+  message_queue::attributes attributes;
+  attributes.arena_address = queue_def->queue;
+  attributes.arena_size_bytes = queue_def->queue_sz;
 
   new ((void*)queue_def->data)
       message_queue (queue_def->name, (std::size_t)queue_def->items,
-                     (std::size_t)queue_def->item_sz, attr);
+                     (std::size_t)queue_def->item_sz, attributes);
 
   return reinterpret_cast<osMessageQId> (queue_def->data);
 }
