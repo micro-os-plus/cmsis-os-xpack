@@ -1109,8 +1109,8 @@ osPoolCreate (const osPoolDef_t* pool_def)
     }
 
   memory_pool::attributes attr;
-  attr.memory_pool_arena_address = pool_def->pool;
-  attr.memory_pool_arena_size_bytes = pool_def->pool_sz;
+  attr.arena_address = pool_def->pool;
+  attr.arena_size_bytes = pool_def->pool_sz;
 
   new ((void*)pool_def->data)
       memory_pool (pool_def->name, (std::size_t)pool_def->items,
@@ -1449,8 +1449,8 @@ osMailCreate (const osMailQDef_t* mail_def,
     }
 
   memory_pool::attributes pool_attr;
-  pool_attr.memory_pool_arena_address = mail_def->pool;
-  pool_attr.memory_pool_arena_size_bytes = mail_def->pool_sz;
+  pool_attr.arena_address = mail_def->pool;
+  pool_attr.arena_size_bytes = mail_def->pool_sz;
   new ((void*)&mail_def->data->pool)
       memory_pool (mail_def->name, (std::size_t)mail_def->items,
                    (std::size_t)mail_def->pool_item_sz, pool_attr);
