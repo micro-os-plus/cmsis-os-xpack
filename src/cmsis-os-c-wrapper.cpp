@@ -482,7 +482,7 @@ osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type,
     }
 
   timer::attributes attr;
-  attr.tm_type = (timer::type_t)type;
+  attr.timer_type = (timer::type_t)type;
 
   new ((void*)timer_def->data)
       timer (timer_def->name, (timer::func_t)timer_def->ptimer,
