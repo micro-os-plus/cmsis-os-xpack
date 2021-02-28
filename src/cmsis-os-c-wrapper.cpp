@@ -169,8 +169,8 @@ osThreadCreate (const osThreadDef_t* thread_def, void* args)
     }
 
   thread::attributes attr;
-  attr.thread_priority = thread_def->tpriority;
-  attr.thread_stack_size_bytes = thread_def->stacksize;
+  attr.priority = thread_def->tpriority;
+  attr.stack_size_bytes = thread_def->stacksize;
 
   // Creating thread with invalid priority should fail (validator requirement).
   if (thread_def->tpriority >= osPriorityError)
@@ -185,9 +185,9 @@ osThreadCreate (const osThreadDef_t* thread_def, void* args)
       if (th->state () == thread::state::undefined
           || th->state () == thread::state::destroyed)
         {
-          if (attr.thread_stack_size_bytes > 0)
+          if (attr.stack_size_bytes > 0)
             {
-              attr.thread_stack_address
+              attr.stack_address
                   = &thread_def->stack[(i)
                                        * ((thread_def->stacksize
                                            + sizeof (uint64_t) - 1)
