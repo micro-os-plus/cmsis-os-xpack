@@ -215,13 +215,13 @@ extern "C"
   typedef micro_os_plus_memory_pool_t osPool;
   typedef micro_os_plus_memory_pool_attributes_t osPoolAttr;
 
-  typedef micro_os_plus_mqueue_t osMessageQ;
-  typedef micro_os_plus_mqueue_attributes_t osMessageQAttr;
+  typedef micro_os_plus_message_queue_t osMessageQ;
+  typedef micro_os_plus_message_queue_attributes_t osMessageQAttr;
 
   typedef struct micro_os_plus_mail_queue_s
   {
     micro_os_plus_memory_pool_t pool;
-    micro_os_plus_mqueue_t queue;
+    micro_os_plus_message_queue_t queue;
   } micro_os_plus_mail_queue_t;
 
   typedef micro_os_plus_mail_queue_t osMailQ;
@@ -1088,8 +1088,8 @@ struct { \
     osMessageQ data; \
     struct { \
       void* queue[items]; \
-      micro_os_plus_mqueue_index_t links[2 * items]; \
-      micro_os_plus_mqueue_priority_t prios[items]; \
+      micro_os_plus_message_queue_index_t links[2 * items]; \
+      micro_os_plus_message_queue_priority_t prios[items]; \
     } storage; \
 } micro_os_plus_messageQ_##name; \
 const osMessageQDef_t micro_os_plus_messageQ_def_##name = { \
@@ -1190,8 +1190,8 @@ struct { \
     } pool_storage; \
     struct { \
       void* queue[items]; \
-      micro_os_plus_mqueue_index_t links[2 * items]; \
-      micro_os_plus_mqueue_priority_t prios[items]; \
+      micro_os_plus_message_queue_index_t links[2 * items]; \
+      micro_os_plus_message_queue_priority_t prios[items]; \
     } queue_storage; \
 } micro_os_plus_mailQ_##name; \
 const osMailQDef_t micro_os_plus_mailQ_def_##name = { \
@@ -1213,8 +1213,8 @@ struct { \
     } pool_storage; \
     struct { \
       void* queue[items]; \
-      micro_os_plus_mqueue_index_t links[2 * items]; \
-      micro_os_plus_mqueue_priority_t prios[items]; \
+      micro_os_plus_message_queue_index_t links[2 * items]; \
+      micro_os_plus_message_queue_priority_t prios[items]; \
     } queue_storage; \
 } micro_os_plus_mailQ_##name; \
 const osMailQDef_t micro_os_plus_mailQ_def_##name = { \
