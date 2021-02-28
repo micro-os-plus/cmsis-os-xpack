@@ -201,22 +201,22 @@ extern "C"
 
   // Redefine some µOS++ struct's to the legacy code.
   typedef micro_os_plus_thread_t osThread;
-  typedef micro_os_plus_thread_attr_t osThreadAttr;
+  typedef micro_os_plus_thread_attributes_t osThreadAttr;
 
   typedef micro_os_plus_timer_t osTimer;
-  typedef micro_os_plus_timer_attr_t osTimerAttr;
+  typedef micro_os_plus_timer_attributes_t osTimerAttr;
 
   typedef micro_os_plus_mutex_t osMutex;
-  typedef micro_os_plus_mutex_attr_t osMutexAttr;
+  typedef micro_os_plus_mutex_attributes_t osMutexAttr;
 
   typedef micro_os_plus_semaphore_t osSemaphore;
-  typedef micro_os_plus_semaphore_attr_t osSemaphoreAttr;
+  typedef micro_os_plus_semaphore_attributes_t osSemaphoreAttr;
 
   typedef micro_os_plus_mempool_t osPool;
-  typedef micro_os_plus_mempool_attr_t osPoolAttr;
+  typedef micro_os_plus_mempool_attributes_t osPoolAttr;
 
   typedef micro_os_plus_mqueue_t osMessageQ;
-  typedef micro_os_plus_mqueue_attr_t osMessageQAttr;
+  typedef micro_os_plus_mqueue_attributes_t osMessageQAttr;
 
   typedef struct micro_os_plus_mail_queue_s
   {
