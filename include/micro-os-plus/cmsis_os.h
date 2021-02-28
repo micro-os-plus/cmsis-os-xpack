@@ -1089,7 +1089,7 @@ struct { \
     struct { \
       void* queue[items]; \
       micro_os_plus_mqueue_index_t links[2 * items]; \
-      micro_os_plus_mqueue_prio_t prios[items]; \
+      micro_os_plus_mqueue_priority_t prios[items]; \
     } storage; \
 } micro_os_plus_messageQ_##name; \
 const osMessageQDef_t micro_os_plus_messageQ_def_##name = { \
@@ -1191,7 +1191,7 @@ struct { \
     struct { \
       void* queue[items]; \
       micro_os_plus_mqueue_index_t links[2 * items]; \
-      micro_os_plus_mqueue_prio_t prios[items]; \
+      micro_os_plus_mqueue_priority_t prios[items]; \
     } queue_storage; \
 } micro_os_plus_mailQ_##name; \
 const osMailQDef_t micro_os_plus_mailQ_def_##name = { \
@@ -1214,7 +1214,7 @@ struct { \
     struct { \
       void* queue[items]; \
       micro_os_plus_mqueue_index_t links[2 * items]; \
-      micro_os_plus_mqueue_prio_t prios[items]; \
+      micro_os_plus_mqueue_priority_t prios[items]; \
     } queue_storage; \
 } micro_os_plus_mailQ_##name; \
 const osMailQDef_t micro_os_plus_mailQ_def_##name = { \
