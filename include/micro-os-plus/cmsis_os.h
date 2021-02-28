@@ -136,14 +136,14 @@ extern "C"
 /// @note The names MUST REMAIN UNCHANGED: @b osPriority shall be consistent in every CMSIS-RTOS.
   typedef enum
   {
-    osPriorityIdle = os_thread_priority_idle, ///< priority: idle (lowest)
-    osPriorityLow = os_thread_priority_low, ///< priority: low
-    osPriorityBelowNormal = os_thread_priority_below_normal, ///< priority: below normal
-    osPriorityNormal = os_thread_priority_normal, ///< priority: normal (default)
-    osPriorityAboveNormal = os_thread_priority_above_normal, ///< priority: above normal
-    osPriorityHigh = os_thread_priority_high, ///< priority: high
-    osPriorityRealtime = os_thread_priority_realtime, ///< priority: realtime (highest)
-    osPriorityError = os_thread_priority_error ///< system cannot determine priority or thread has illegal priority
+    osPriorityIdle = micro_os_plus_thread_priority_idle, ///< priority: idle (lowest)
+    osPriorityLow = micro_os_plus_thread_priority_low, ///< priority: low
+    osPriorityBelowNormal = micro_os_plus_thread_priority_below_normal, ///< priority: below normal
+    osPriorityNormal = micro_os_plus_thread_priority_normal, ///< priority: normal (default)
+    osPriorityAboveNormal = micro_os_plus_thread_priority_above_normal, ///< priority: above normal
+    osPriorityHigh = micro_os_plus_thread_priority_high, ///< priority: high
+    osPriorityRealtime = micro_os_plus_thread_priority_realtime, ///< priority: realtime (highest)
+    osPriorityError = micro_os_plus_thread_priority_error ///< system cannot determine priority or thread has illegal priority
   } osPriority;
 
   /**
@@ -172,99 +172,99 @@ extern "C"
     osErrorNoMemory = 0x85, ///< system is out of memory: it was impossible to allocate or reserve memory for the operation.
     osErrorValue = 0x86, ///< value of a parameter is out of range.
     osErrorOS = 0xFF, ///< unspecified RTOS error: run-time error but no other error message fits.
-    os_status_reserved = 0x7FFFFFFF ///< prevent from enum down-size compiler optimization.
+    osStatusReserved_ = 0x7FFFFFFF ///< prevent from enum down-size compiler optimization.
   } osStatus;
 
   /**
    * @brief Timer type value for the timer definition.
-   * @note The names MUST REMAIN UNCHANGED: @b os_timer_type shall be consistent in every CMSIS-RTOS.
+   * @note The names MUST REMAIN UNCHANGED: @b micro_os_plus_timer_type shall be consistent in every CMSIS-RTOS.
    */
   typedef enum
   {
-    osTimerOnce = os_timer_once, ///< one-shot timer
-    osTimerPeriodic = os_timer_periodic ///< repeating timer
-  } os_timer_type;
+    osTimerOnce = micro_os_plus_timer_once, ///< one-shot timer
+    osTimerPeriodic = micro_os_plus_timer_periodic ///< repeating timer
+  } micro_os_plus_timer_type;
 
   /**
    * @brief Entry point of a thread.
-   * @note MUST REMAIN UNCHANGED: @b os_pthread shall be consistent in every CMSIS-RTOS.
+   * @note MUST REMAIN UNCHANGED: @b micro_os_plus_pthread shall be consistent in every CMSIS-RTOS.
    */
   typedef void
-  (*os_pthread) (void const *argument);
+  (*micro_os_plus_pthread) (void const *argument);
 
   /**
    * @brief Entry point of a timer call back function.
-   * @note MUST REMAIN UNCHANGED: @b os_ptimer shall be consistent in every CMSIS-RTOS.
+   * @note MUST REMAIN UNCHANGED: @b micro_os_plus_ptimer shall be consistent in every CMSIS-RTOS.
    */
   typedef void
-  (*os_ptimer) (void const *argument);
+  (*micro_os_plus_ptimer) (void const *argument);
 
   // Redefine some µOS++ struct's to the legacy code.
-  typedef os_thread_t osThread;
-  typedef os_thread_attr_t osThreadAttr;
+  typedef micro_os_plus_thread_t osThread;
+  typedef micro_os_plus_thread_attr_t osThreadAttr;
 
-  typedef os_timer_t osTimer;
-  typedef os_timer_attr_t osTimerAttr;
+  typedef micro_os_plus_timer_t osTimer;
+  typedef micro_os_plus_timer_attr_t osTimerAttr;
 
-  typedef os_mutex_t osMutex;
-  typedef os_mutex_attr_t osMutexAttr;
+  typedef micro_os_plus_mutex_t osMutex;
+  typedef micro_os_plus_mutex_attr_t osMutexAttr;
 
-  typedef os_semaphore_t osSemaphore;
-  typedef os_semaphore_attr_t osSemaphoreAttr;
+  typedef micro_os_plus_semaphore_t osSemaphore;
+  typedef micro_os_plus_semaphore_attr_t osSemaphoreAttr;
 
-  typedef os_mempool_t osPool;
-  typedef os_mempool_attr_t osPoolAttr;
+  typedef micro_os_plus_mempool_t osPool;
+  typedef micro_os_plus_mempool_attr_t osPoolAttr;
 
-  typedef os_mqueue_t osMessageQ;
-  typedef os_mqueue_attr_t osMessageQAttr;
+  typedef micro_os_plus_mqueue_t osMessageQ;
+  typedef micro_os_plus_mqueue_attr_t osMessageQAttr;
 
-  typedef struct os_mail_queue_s
+  typedef struct micro_os_plus_mail_queue_s
   {
-    os_mempool_t pool;
-    os_mqueue_t queue;
-  } os_mail_queue_t;
+    micro_os_plus_mempool_t pool;
+    micro_os_plus_mqueue_t queue;
+  } micro_os_plus_mail_queue_t;
 
-  typedef os_mail_queue_t osMailQ;
+  typedef micro_os_plus_mail_queue_t osMailQ;
 
   /**
    * @brief Thread ID identifies the thread (pointer to a thread control block).
-   * @note CAN BE CHANGED: @b os_thread_cb is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_thread_cb is implementation specific in every CMSIS-RTOS.
    */
   typedef osThread* osThreadId;
 
   /**
    * @brief Timer ID identifies the timer (pointer to a timer control block).
-   * @note CAN BE CHANGED: @b os_timer_cb is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_timer_cb is implementation specific in every CMSIS-RTOS.
    */
   typedef osTimer* osTimerId;
 
   /**
    * @brief Mutex ID identifies the mutex (pointer to a mutex control block).
-   * @note CAN BE CHANGED: @b os_mutex_cb is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_mutex_cb is implementation specific in every CMSIS-RTOS.
    */
   typedef osMutex* osMutexId;
 
   /**
    * @brief Semaphore ID identifies the semaphore (pointer to a semaphore control block).
-   * @note CAN BE CHANGED: @b os_semaphore_cb is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_semaphore_cb is implementation specific in every CMSIS-RTOS.
    */
   typedef osSemaphore* osSemaphoreId;
 
   /**
    * @brief Pool ID identifies the memory pool (pointer to a memory pool control block).
-   * @note CAN BE CHANGED: @b os_pool_cb is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_pool_cb is implementation specific in every CMSIS-RTOS.
    */
   typedef osPool* osPoolId;
 
   /**
    * @brief Message ID identifies the message queue (pointer to a message queue control block).
-   * @note CAN BE CHANGED: @b os_messageQ_cb is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_messageQ_cb is implementation specific in every CMSIS-RTOS.
    */
   typedef osMessageQ* osMessageQId;
 
   /**
    * @brief Mail ID identifies the mail queue (pointer to a mail queue control block).
-   * @note CAN BE CHANGED: @b os_mailQ_cb is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_mailQ_cb is implementation specific in every CMSIS-RTOS.
    */
   typedef osMailQ* osMailQId;
 
@@ -273,12 +273,12 @@ extern "C"
 
   /**
    * @brief Thread definition structure contains startup information of a thread.
-   * @note CAN BE CHANGED: @b os_thread_def is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_thread_def is implementation specific in every CMSIS-RTOS.
    */
-  typedef struct os_thread_def
+  typedef struct micro_os_plus_thread_def
   {
     const char* name;
-    os_pthread pthread; ///< start address of thread function
+    micro_os_plus_pthread pthread; ///< start address of thread function
     osPriority tpriority; ///< initial thread priority
     uint32_t instances; ///< maximum number of instances of that thread function
     uint32_t stacksize; ///< stack size requirements in bytes; 0 is default stack size
@@ -290,20 +290,20 @@ extern "C"
 
   /**
    * @brief Timer definition structure contains timer parameters.
-   * @note CAN BE CHANGED: @b os_timer_def is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_timer_def is implementation specific in every CMSIS-RTOS.
    */
-  typedef struct os_timer_def
+  typedef struct micro_os_plus_timer_def
   {
     const char* name;
-    os_ptimer ptimer; ///< start address of a timer function
+    micro_os_plus_ptimer ptimer; ///< start address of a timer function
     osTimer* data;
   } osTimerDef_t;
 
   /**
    * @brief Mutex definition structure contains setup information for a mutex.
-   * @note CAN BE CHANGED: @b os_mutex_def is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_mutex_def is implementation specific in every CMSIS-RTOS.
    */
-  typedef struct os_mutex_def
+  typedef struct micro_os_plus_mutex_def
   {
     const char* name;
     osMutex* data;
@@ -311,9 +311,9 @@ extern "C"
 
   /**
    * @brief Semaphore definition structure contains setup information for a semaphore.
-   * @note CAN BE CHANGED: @b os_semaphore_def is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_semaphore_def is implementation specific in every CMSIS-RTOS.
    */
-  typedef struct os_semaphore_def
+  typedef struct micro_os_plus_semaphore_def
   {
     const char* name;
     osSemaphore* data;
@@ -324,9 +324,9 @@ extern "C"
 
   /**
    * @brief Definition structure for memory block allocation.
-   * @note CAN BE CHANGED: @b os_pool_def is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_pool_def is implementation specific in every CMSIS-RTOS.
    */
-  typedef struct os_pool_def
+  typedef struct micro_os_plus_pool_def
   {
     const char* name;
     uint32_t items; ///< number of items (elements) in the pool
@@ -338,9 +338,9 @@ extern "C"
 
   /**
    * @brief Definition structure for message queue.
-   * @note CAN BE CHANGED: @b os_messageQ_def is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_messageQ_def is implementation specific in every CMSIS-RTOS.
    */
-  typedef struct os_messageQ_def
+  typedef struct micro_os_plus_messageQ_def
   {
     const char* name;
     uint32_t items; ///< number of elements in the queue
@@ -352,9 +352,9 @@ extern "C"
 
   /**
    * @brief Definition structure for mail queue.
-   * @note CAN BE CHANGED: @b os_mailQ_def is implementation specific in every CMSIS-RTOS.
+   * @note CAN BE CHANGED: @b micro_os_plus_mailQ_def is implementation specific in every CMSIS-RTOS.
    */
-  typedef struct os_mailQ_def
+  typedef struct micro_os_plus_mailQ_def
   {
     const char* name;
     uint32_t items; ///< number of elements in the queue
@@ -369,7 +369,7 @@ extern "C"
 
   /**
    * @brief Event structure contains detailed information about an event.
-   * @note MUST REMAIN UNCHANGED: @b os_event shall be consistent in every CMSIS-RTOS.
+   * @note MUST REMAIN UNCHANGED: @b micro_os_plus_event shall be consistent in every CMSIS-RTOS.
    *       However the struct may be extended at the end.
    */
   typedef struct
@@ -478,36 +478,36 @@ extern "C"
    */
 #if defined (osObjectsExternal)  // object is external
 #define osThreadDef(name, priority, instances, stacksz)  \
-extern const osThreadDef_t os_thread_def_##name
+extern const osThreadDef_t micro_os_plus_thread_def_##name
 #else                            // define the object
 #define osThreadAllocatedDef(name, priority, instances, stacksz)  \
 struct { \
     osThread data[instances]; \
-} os_thread_##name; \
-const osThreadDef_t os_thread_def_##name = \
+} micro_os_plus_thread_##name; \
+const osThreadDef_t micro_os_plus_thread_def_##name = \
 { \
     #name, \
-    (os_pthread)(name), \
+    (micro_os_plus_pthread)(name), \
     (priority), \
     (instances), \
     (stacksz), \
-    &os_thread_##name.data[0], \
+    &micro_os_plus_thread_##name.data[0], \
     0 \
 }
 #define osThreadStaticDef(name, priority, instances, stacksz)  \
 struct { \
     uint64_t stack[(instances)*((stacksz+sizeof(uint64_t)-1)/sizeof(uint64_t))]; \
     osThread data[instances]; \
-} os_thread_##name; \
-const osThreadDef_t os_thread_def_##name = \
+} micro_os_plus_thread_##name; \
+const osThreadDef_t micro_os_plus_thread_def_##name = \
 { \
     #name, \
-    (os_pthread)(name), \
+    (micro_os_plus_pthread)(name), \
     (priority), \
     (instances), \
     (stacksz), \
-    &os_thread_##name.data[0], \
-    &os_thread_##name.stack[0] \
+    &micro_os_plus_thread_##name.data[0], \
+    &micro_os_plus_thread_##name.stack[0] \
 }
 #if defined(osObjectsStatic)
 #define osThreadDef(name, priority, instances, stacksz)  osThreadStaticDef(name, priority, instances, stacksz)
@@ -527,7 +527,7 @@ const osThreadDef_t os_thread_def_##name = \
    *       macro body is implementation specific in every CMSIS-RTOS.
    */
 #define osThread(name)  \
-&os_thread_def_##name
+&micro_os_plus_thread_def_##name
 
   /**
    * @brief Create a thread.
@@ -647,17 +647,17 @@ const osThreadDef_t os_thread_def_##name = \
    */
 #if defined (osObjectsExternal)  // object is external
 #define osTimerDef(name, function)  \
-extern const osTimerDef_t os_timer_def_##name
+extern const osTimerDef_t micro_os_plus_timer_def_##name
 #else                            // define the object
 #define osTimerDef(name, function)  \
 struct { \
     osTimer data; \
-} os_timer_##name; \
-const osTimerDef_t os_timer_def_##name = \
+} micro_os_plus_timer_##name; \
+const osTimerDef_t micro_os_plus_timer_def_##name = \
 { \
     #name, \
-    (os_ptimer)(function), \
-    &os_timer_##name.data \
+    (micro_os_plus_ptimer)(function), \
+    &micro_os_plus_timer_##name.data \
 }
 #endif
 
@@ -672,7 +672,7 @@ const osTimerDef_t os_timer_def_##name = \
    *       macro body is implementation specific in every CMSIS-RTOS.
    */
 #define osTimer(name) \
-&os_timer_def_##name
+&micro_os_plus_timer_def_##name
 
   /**
    * @brief Create a timer.
@@ -684,7 +684,7 @@ const osTimerDef_t os_timer_def_##name = \
    * @note MUST REMAIN UNCHANGED: @b osTimerCreate shall be consistent in every CMSIS-RTOS.
    */
   osTimerId
-  osTimerCreate (const osTimerDef_t* timer_def, os_timer_type type, void* args);
+  osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type, void* args);
 
   /**
    * @brief Start the timer.
@@ -777,14 +777,14 @@ const osTimerDef_t os_timer_def_##name = \
    */
 #if defined (osObjectsExternal)  // object is external
 #define osMutexDef(name)  \
-extern const osMutexDef_t os_mutex_def_##name
+extern const osMutexDef_t micro_os_plus_mutex_def_##name
 #else                            // define the object
 #define osMutexDef(name)  \
-osMutex os_mutex_data_##name; \
-const osMutexDef_t os_mutex_def_##name = \
+osMutex micro_os_plus_mutex_data_##name; \
+const osMutexDef_t micro_os_plus_mutex_def_##name = \
 { \
     #name, \
-    &os_mutex_data_##name \
+    &micro_os_plus_mutex_data_##name \
 }
 #endif
 
@@ -799,7 +799,7 @@ const osMutexDef_t os_mutex_def_##name = \
    *       macro body is implementation specific in every CMSIS-RTOS.
    */
 #define osMutex(name)  \
-&os_mutex_def_##name
+&micro_os_plus_mutex_def_##name
 
   /**
    * @brief Create a mutex.
@@ -869,14 +869,14 @@ const osMutexDef_t os_mutex_def_##name = \
    */
 #if defined (osObjectsExternal)  // object is external
 #define osSemaphoreDef(name)  \
-extern const osSemaphoreDef_t os_semaphore_def_##name
+extern const osSemaphoreDef_t micro_os_plus_semaphore_def_##name
 #else                            // define the object
 #define osSemaphoreDef(name)  \
-osSemaphore os_semaphore_data_##name; \
-const osSemaphoreDef_t os_semaphore_def_##name = \
+osSemaphore micro_os_plus_semaphore_data_##name; \
+const osSemaphoreDef_t micro_os_plus_semaphore_def_##name = \
 { \
     #name, \
-    &os_semaphore_data_##name \
+    &micro_os_plus_semaphore_data_##name \
 }
 #endif
 
@@ -889,7 +889,7 @@ const osSemaphoreDef_t os_semaphore_def_##name = \
    * every CMSIS-RTOS.
    */
 #define osSemaphore(name)  \
-&os_semaphore_def_##name
+&micro_os_plus_semaphore_def_##name
 
   /**
    * @brief Create a semaphore.
@@ -959,20 +959,20 @@ const osSemaphoreDef_t os_semaphore_def_##name = \
    */
 #if defined (osObjectsExternal)  // object is external
 #define osPoolDef(name, no, type)   \
-extern const osPoolDef_t os_pool_def_##name
+extern const osPoolDef_t micro_os_plus_pool_def_##name
 #else                            // define the object
 #define osPoolAllocatedDef(name, items, type)   \
 struct { \
     osPool data; \
-} os_pool_##name; \
-const osPoolDef_t os_pool_def_##name = \
+} micro_os_plus_pool_##name; \
+const osPoolDef_t micro_os_plus_pool_def_##name = \
 { \
     #name, \
     (items), \
     sizeof(type), \
     0, \
     0, \
-    &os_pool_##name.data \
+    &micro_os_plus_pool_##name.data \
 }
 #define osPoolStaticDef(name, items, type)   \
 struct { \
@@ -980,15 +980,15 @@ struct { \
     struct { \
       type pool[items]; \
     } storage; \
-} os_pool_##name; \
-const osPoolDef_t os_pool_def_##name = \
+} micro_os_plus_pool_##name; \
+const osPoolDef_t micro_os_plus_pool_def_##name = \
 { \
     #name, \
     (items), \
     sizeof(type), \
-    &os_pool_##name.storage, \
-    sizeof(os_pool_##name.storage), \
-    &os_pool_##name.data \
+    &micro_os_plus_pool_##name.storage, \
+    sizeof(micro_os_plus_pool_##name.storage), \
+    &micro_os_plus_pool_##name.data \
 }
 #if defined(osObjectsStatic)
 #define osPoolDef(name, items, type) osPoolStaticDef(name, items, type)
@@ -1005,7 +1005,7 @@ const osPoolDef_t os_pool_def_##name = \
    *       macro body is implementation specific in every CMSIS-RTOS.
    */
 #define osPool(name) \
-&os_pool_def_##name
+&micro_os_plus_pool_def_##name
 
   /**
    * @brief Create a memory pool.
@@ -1069,36 +1069,36 @@ const osPoolDef_t os_pool_def_##name = \
    */
 #if defined (osObjectsExternal)  // object is external
 #define osMessageQDef(name, queue_sz, type)   \
-extern const osMessageQDef_t os_messageQ_def_##name
+extern const osMessageQDef_t micro_os_plus_messageQ_def_##name
 #else                            // define the object
 #define osMessageQAllocatedDef(name, items, type)   \
 struct { \
     osMessageQ data; \
-} os_messageQ_##name; \
-const osMessageQDef_t os_messageQ_def_##name = { \
+} micro_os_plus_messageQ_##name; \
+const osMessageQDef_t micro_os_plus_messageQ_def_##name = { \
     #name, \
     (items), \
     sizeof (void*), \
     0, \
     0, \
-    &os_messageQ_##name.data \
+    &micro_os_plus_messageQ_##name.data \
 }
 #define osMessageQStaticDef(name, items, type)   \
 struct { \
     osMessageQ data; \
     struct { \
       void* queue[items]; \
-      os_mqueue_index_t links[2 * items]; \
-      os_mqueue_prio_t prios[items]; \
+      micro_os_plus_mqueue_index_t links[2 * items]; \
+      micro_os_plus_mqueue_prio_t prios[items]; \
     } storage; \
-} os_messageQ_##name; \
-const osMessageQDef_t os_messageQ_def_##name = { \
+} micro_os_plus_messageQ_##name; \
+const osMessageQDef_t micro_os_plus_messageQ_def_##name = { \
     #name, \
     (items), \
     sizeof (void*), \
-    &os_messageQ_##name.storage, \
-    sizeof(os_messageQ_##name.storage), \
-    &os_messageQ_##name.data \
+    &micro_os_plus_messageQ_##name.storage, \
+    sizeof(micro_os_plus_messageQ_##name.storage), \
+    &micro_os_plus_messageQ_##name.data \
 }
 
 #if defined(osObjectsStatic)
@@ -1119,7 +1119,7 @@ const osMessageQDef_t os_messageQ_def_##name = { \
    *       macro body is implementation specific in every CMSIS-RTOS.
    */
 #define osMessageQ(name) \
-&os_messageQ_def_##name
+&micro_os_plus_messageQ_def_##name
 
   /**
    * @brief Create a message queue.
@@ -1180,7 +1180,7 @@ const osMessageQDef_t os_messageQ_def_##name = { \
    */
 #if defined (osObjectsExternal)  // object is external
 #define osMailQDef(name, queue_sz, type) \
-extern const osMailQDef_t os_mailQ_def_##name
+extern const osMailQDef_t micro_os_plus_mailQ_def_##name
 #else                            // define the object
 #define osMailQAllocatedDef(name, items, type) \
 struct { \
@@ -1190,11 +1190,11 @@ struct { \
     } pool_storage; \
     struct { \
       void* queue[items]; \
-      os_mqueue_index_t links[2 * items]; \
-      os_mqueue_prio_t prios[items]; \
+      micro_os_plus_mqueue_index_t links[2 * items]; \
+      micro_os_plus_mqueue_prio_t prios[items]; \
     } queue_storage; \
-} os_mailQ_##name; \
-const osMailQDef_t os_mailQ_def_##name = { \
+} micro_os_plus_mailQ_##name; \
+const osMailQDef_t micro_os_plus_mailQ_def_##name = { \
     #name, \
     (items), \
     sizeof (type), \
@@ -1203,7 +1203,7 @@ const osMailQDef_t os_mailQ_def_##name = { \
     0, \
     0, \
     0, \
-    &os_mailQ_##name.data \
+    &micro_os_plus_mailQ_##name.data \
 }
 #define osMailQStaticDef(name, items, type) \
 struct { \
@@ -1213,20 +1213,20 @@ struct { \
     } pool_storage; \
     struct { \
       void* queue[items]; \
-      os_mqueue_index_t links[2 * items]; \
-      os_mqueue_prio_t prios[items]; \
+      micro_os_plus_mqueue_index_t links[2 * items]; \
+      micro_os_plus_mqueue_prio_t prios[items]; \
     } queue_storage; \
-} os_mailQ_##name; \
-const osMailQDef_t os_mailQ_def_##name = { \
+} micro_os_plus_mailQ_##name; \
+const osMailQDef_t micro_os_plus_mailQ_def_##name = { \
     #name, \
     (items), \
     sizeof (type), \
     sizeof (void*), \
-    &os_mailQ_##name.pool_storage, \
-    sizeof(os_mailQ_##name.pool_storage), \
-    &os_mailQ_##name.queue_storage, \
-    sizeof(os_mailQ_##name.queue_storage), \
-    &os_mailQ_##name.data \
+    &micro_os_plus_mailQ_##name.pool_storage, \
+    sizeof(micro_os_plus_mailQ_##name.pool_storage), \
+    &micro_os_plus_mailQ_##name.queue_storage, \
+    sizeof(micro_os_plus_mailQ_##name.queue_storage), \
+    &micro_os_plus_mailQ_##name.data \
 }
 #if defined(osObjectsStatic)
 #define osMailQDef(name, items, type) osMailQStaticDef(name, items, type)
@@ -1243,7 +1243,7 @@ const osMailQDef_t os_mailQ_def_##name = { \
    *       macro body is implementation specific in every CMSIS-RTOS.
    */
 #define osMailQ(name)  \
-&os_mailQ_def_##name
+&micro_os_plus_mailQ_def_##name
 
   /**
    * @brief Create a mail queue.

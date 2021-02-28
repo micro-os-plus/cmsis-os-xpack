@@ -468,7 +468,8 @@ osWait (uint32_t millisec)
  * @warning Cannot be invoked from Interrupt Service Routines.
  */
 osTimerId
-osTimerCreate (const osTimerDef_t* timer_def, os_timer_type type, void* args)
+osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type,
+               void* args)
 {
   if (interrupts::in_handler_mode ())
     {
