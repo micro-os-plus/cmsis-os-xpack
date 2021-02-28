@@ -156,7 +156,7 @@ osKernelSysTick (void)
  * @warning Cannot be invoked from Interrupt Service Routines.
  */
 osThreadId
-osThreadCreate (const osThreadDef_t* thread_def, void* args)
+osThreadCreate (const osThreadDef_t* thread_def, void* arguments)
 {
   if (interrupts::in_handler_mode ())
     {
@@ -193,8 +193,9 @@ osThreadCreate (const osThreadDef_t* thread_def, void* args)
                                            + sizeof (uint64_t) - 1)
                                           / sizeof (uint64_t))];
             }
-          new (th) thread (thread_def->name,
-                           (thread::func_t)thread_def->pthread, args, attr);
+          new (th)
+              thread (thread_def->name, (thread::func_t)thread_def->pthread,
+                      arguments, attr);
 
           // No need to yield here, already done by constructor.
           return reinterpret_cast<osThreadId> (th);
@@ -469,7 +470,7 @@ osWait (uint32_t millisec)
  */
 osTimerId
 osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type,
-               void* args)
+               void* arguments)
 {
   if (interrupts::in_handler_mode ())
     {
@@ -486,7 +487,7 @@ osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type,
 
   new ((void*)timer_def->data)
       timer (timer_def->name, (timer::func_t)timer_def->ptimer,
-             (timer::func_args_t)args, attr);
+             (timer::func_args_t)arguments, attr);
 
   return reinterpret_cast<osTimerId> (timer_def->data);
 }

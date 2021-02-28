@@ -532,14 +532,14 @@ const osThreadDef_t micro_os_plus_thread_def_##name = \
   /**
    * @brief Create a thread.
    * @param [in]     thread_def    Thread definition referenced with @ref osThread.
-   * @param [in]     args      Pointer that is passed to the thread function as start argument.
+   * @param [in]     arguments      Pointer that is passed to the thread function as start argument.
    * @return thread ID for reference by other functions or NULL in case of error.
    *
    * @note MUST REMAIN UNCHANGED: @b osThreadCreate shall be consistent
    * in every CMSIS-RTOS.
    */
   osThreadId
-  osThreadCreate (const osThreadDef_t* thread_def, void* args);
+  osThreadCreate (const osThreadDef_t* thread_def, void* arguments);
 
   /**
    * @brief Get the current thread.
@@ -678,13 +678,13 @@ const osTimerDef_t micro_os_plus_timer_def_##name = \
    * @brief Create a timer.
    * @param [in] timer_def     Timer object referenced with @ref osTimer.
    * @param [in] type          osTimerOnce for one-shot or osTimerPeriodic for periodic behavior.
-   * @param [in] args      Argument to the timer call back function.
+   * @param [in] arguments      Argument to the timer call back function.
    * @return timer ID for reference by other functions or NULL in case of error.
    *
    * @note MUST REMAIN UNCHANGED: @b osTimerCreate shall be consistent in every CMSIS-RTOS.
    */
   osTimerId
-  osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type, void* args);
+  osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type, void* arguments);
 
   /**
    * @brief Start the timer.
