@@ -487,7 +487,7 @@ osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type,
 
   new ((void*)timer_def->data)
       timer (timer_def->name, (timer::function_t)timer_def->ptimer,
-             (timer::func_args_t)arguments, attributes);
+             (timer::function_arguments_t)arguments, attributes);
 
   return reinterpret_cast<osTimerId> (timer_def->data);
 }
