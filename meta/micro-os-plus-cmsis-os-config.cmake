@@ -54,7 +54,7 @@ if (NOT TARGET micro-os-plus-cmsis-os-interface)
   # Aliases.
 
   add_library(micro-os-plus::cmsis-os ALIAS micro-os-plus-cmsis-os-interface)
-  message(STATUS "micro-os-plus::cmsis-os")
+  message(STATUS "=> micro-os-plus::cmsis-os")
 
 endif()
 
