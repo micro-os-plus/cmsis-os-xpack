@@ -181,7 +181,7 @@ osThreadCreate (const osThreadDef_t* thread_def, void* arguments)
   // Find a free slot in the tread definitions array.
   for (uint32_t i = 0; i < thread_def->instances; ++i)
     {
-      thread* th = (thread*)&thread_def->data[i];
+      thread* th = reinterpret_cast<thread*> (&thread_def->data[i]);
       if (th->state () == thread::state::undefined
           || th->state () == thread::state::destroyed)
         {
@@ -193,9 +193,16 @@ osThreadCreate (const osThreadDef_t* thread_def, void* arguments)
                                            + sizeof (uint64_t) - 1)
                                           / sizeof (uint64_t))];
             }
-          new (th) thread (thread_def->name,
-                           (thread::function_t)thread_def->pthread, arguments,
-                           attributes);
+#pragma GCC diagnostic push
+// cast between incompatible function types from 'micro_os_plus_pthread'
+// {aka 'void (*)(const void*)'} to 'micro_os_plus::rtos::thread::function_t'
+// {aka 'void* (*)(void*)'}
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+          new (th) thread (
+              thread_def->name,
+              reinterpret_cast<thread::function_t> (thread_def->pthread),
+              arguments, attributes);
+#pragma GCC diagnostic pop
 
           // No need to yield here, already done by constructor.
           return reinterpret_cast<osThreadId> (th);
@@ -392,7 +399,7 @@ osDelay (uint32_t millisec)
     }
 
   result_t res = sysclock.sleep_for (
-      clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)));
+      clock_systick::ticks_cast (static_cast<uint64_t> (millisec * 1000u)));
 
   if (res == ETIMEDOUT)
     {
@@ -438,7 +445,7 @@ osWait (uint32_t millisec)
     }
 
   result_t res = sysclock.wait_for (
-      clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)));
+      clock_systick::ticks_cast (static_cast<uint64_t> (millisec * 1000u)));
 
   // TODO: return events
   if (res == ETIMEDOUT)
@@ -483,11 +490,11 @@ osTimerCreate (const osTimerDef_t* timer_def, micro_os_plus_timer_type type,
     }
 
   timer::attributes attributes;
-  attributes.timer_type = (timer::type_t)type;
+  attributes.timer_type = static_cast<timer::type_t> (type);
 
-  new ((void*)timer_def->data)
-      timer (timer_def->name, (timer::function_t)timer_def->ptimer,
-             (timer::function_arguments_t)arguments, attributes);
+  new (static_cast<void*> (timer_def->data)) timer (
+      timer_def->name, reinterpret_cast<timer::function_t> (timer_def->ptimer),
+      arguments, attributes);
 
   return reinterpret_cast<osTimerId> (timer_def->data);
 }
@@ -511,9 +518,9 @@ osTimerStart (osTimerId timer_id, uint32_t millisec)
       return osErrorParameter;
     }
 
-  result_t res
-      = (reinterpret_cast<rtos::timer&> (*timer_id))
-            .start (clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)));
+  result_t res = (reinterpret_cast<rtos::timer&> (*timer_id))
+                     .start (clock_systick::ticks_cast (
+                         static_cast<uint64_t> (millisec * 1000u)));
 
   if (res == result::ok)
     {
@@ -595,17 +602,18 @@ osSignalSet (osThreadId thread_id, int32_t signals)
 {
   if (thread_id == nullptr)
     {
-      return (int32_t)0x80000000;
+      return static_cast<int32_t> (0x80000000);
     }
 
-  if (signals == (int32_t)0x80000000)
+  if (signals == static_cast<int32_t> (0x80000000))
     {
-      return (int32_t)0x80000000;
+      return static_cast<int32_t> (0x80000000);
     }
 
   flags::mask_t osig;
-  ((thread*)(thread_id))->flags_raise ((flags::mask_t)signals, &osig);
-  return (int32_t)osig;
+  (reinterpret_cast<thread*> (thread_id))
+      ->flags_raise (static_cast<flags::mask_t> (signals), &osig);
+  return static_cast<int32_t> (osig);
 }
 
 /**
@@ -619,24 +627,25 @@ osSignalClear (osThreadId thread_id, int32_t signals)
 {
   if (thread_id == nullptr)
     {
-      return (int32_t)0x80000000;
+      return static_cast<int32_t> (0x80000000);
     }
 
   if (interrupts::in_handler_mode () || (signals == 0))
     {
-      return (int32_t)0x80000000;
+      return static_cast<int32_t> (0x80000000);
     }
 
   flags::mask_t sig;
 
 #if defined(MICRO_OS_PLUS_INCLUDE_RTMICRO_OS_PLUS_THREAD_PUBLIC_FLAGS_CLEAR)
-  ((thread*)(thread_id))->flags_clear ((flags::mask_t)signals, &sig);
+  (reinterpret_cast<thread*> (thread_id))
+      ->flags_clear (static_cast<flags::mask_t> (signals), &sig);
 #else
-  assert (((thread*)(thread_id)) == &this_thread::thread ());
+  assert ((reinterpret_cast<thread*> (thread_id)) == &this_thread::thread ());
   // IGNORE THREAD ID!
-  this_thread::flags_clear ((flags::mask_t)signals, &sig);
+  this_thread::flags_clear (static_cast<flags::mask_t> (signals), &sig);
 #endif
-  return (int32_t)sig;
+  return static_cast<int32_t> (sig);
 }
 
 #pragma GCC diagnostic push
@@ -675,7 +684,7 @@ osSignalWait (int32_t signals, uint32_t millisec)
       return event;
     }
 
-  if ((uint32_t)signals & 0x80000000)
+  if (static_cast<uint32_t> (signals) & 0x80000000)
     {
       event.status = osErrorValue;
       return event;
@@ -684,20 +693,22 @@ osSignalWait (int32_t signals, uint32_t millisec)
   result_t res;
   if (millisec == osWaitForever)
     {
-      res = this_thread::flags_wait ((flags::mask_t)signals,
-                                     (flags::mask_t*)&event.value.signals);
+      res = this_thread::flags_wait (
+          static_cast<flags::mask_t> (signals),
+          reinterpret_cast<flags::mask_t*> (&event.value.signals));
     }
   else if (millisec == 0)
     {
-      res = this_thread::flags_try_wait ((flags::mask_t)signals,
-                                         (flags::mask_t*)&event.value.signals);
+      res = this_thread::flags_try_wait (
+          static_cast<flags::mask_t> (signals),
+          reinterpret_cast<flags::mask_t*> (&event.value.signals));
     }
   else
     {
       res = this_thread::flags_timed_wait (
-          (flags::mask_t)signals,
-          clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)),
-          (flags::mask_t*)&event.value.signals);
+          static_cast<flags::mask_t> (signals),
+          clock_systick::ticks_cast (static_cast<uint64_t> (millisec * 1000u)),
+          reinterpret_cast<flags::mask_t*> (&event.value.signals));
     }
 
   if (res == result::ok)
@@ -757,7 +768,8 @@ osMutexCreate (const osMutexDef_t* mutex_def)
   attributes.type = mutex::type::recursive;
   attributes.protocol = mutex::protocol::inherit;
 
-  new ((void*)mutex_def->data) mutex (mutex_def->name, attributes);
+  new (static_cast<void*> (mutex_def->data))
+      mutex (mutex_def->name, attributes);
 
   return reinterpret_cast<osMutexId> (mutex_def->data);
 }
@@ -806,8 +818,8 @@ osMutexWait (osMutexId mutex_id, uint32_t millisec)
   else
     {
       ret = (reinterpret_cast<rtos::mutex&> (*mutex_id))
-                .timed_lock (
-                    clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)));
+                .timed_lock (clock_systick::ticks_cast (
+                    static_cast<uint64_t> (millisec * 1000u)));
       // osErrorTimeoutResource:
     }
 
@@ -935,15 +947,16 @@ osSemaphoreCreate (const osSemaphoreDef_t* semaphore_def, int32_t count)
     }
 
   semaphore::attributes attributes;
-  attributes.initial_value = (semaphore::count_t)count;
+  attributes.initial_value = static_cast<semaphore::count_t> (count);
   // The logic is very strange, the CMSIS expects both the max-count to be the
   // same as count, and also to accept a count of 0, which leads to
   // useless semaphores. We patch this behaviour in the wrapper, the main
   // object uses a more realistic max_value.
-  attributes.max_value
-      = (semaphore::count_t) (count == 0 ? osFeature_Semaphore : count);
+  attributes.max_value = static_cast<semaphore::count_t> (
+      count == 0 ? osFeature_Semaphore : count);
 
-  new ((void*)semaphore_def->data) semaphore (semaphore_def->name, attributes);
+  new (static_cast<void*> (semaphore_def->data))
+      semaphore (semaphore_def->name, attributes);
 
   return reinterpret_cast<osSemaphoreId> (semaphore_def->data);
 }
@@ -999,8 +1012,8 @@ osSemaphoreWait (osSemaphoreId semaphore_id, uint32_t millisec)
   else
     {
       res = (reinterpret_cast<rtos::semaphore&> (*semaphore_id))
-                .timed_wait (
-                    clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)));
+                .timed_wait (clock_systick::ticks_cast (
+                    static_cast<uint64_t> (millisec * 1000u)));
       if (res == ETIMEDOUT)
         {
           return 0;
@@ -1010,8 +1023,7 @@ osSemaphoreWait (osSemaphoreId semaphore_id, uint32_t millisec)
   if (res == 0)
     {
       int count
-          = (int32_t) (reinterpret_cast<rtos::semaphore&> (*semaphore_id))
-                .value ();
+          = (reinterpret_cast<rtos::semaphore&> (*semaphore_id)).value ();
       return count + 1;
     }
   else
@@ -1113,9 +1125,9 @@ osPoolCreate (const osPoolDef_t* pool_def)
   attributes.arena_address = pool_def->pool;
   attributes.arena_size_bytes = pool_def->pool_sz;
 
-  new ((void*)pool_def->data)
-      memory_pool (pool_def->name, (std::size_t)pool_def->items,
-                   (std::size_t)pool_def->item_sz, attributes);
+  new (static_cast<void*> (pool_def->data))
+      memory_pool (pool_def->name, static_cast<std::size_t> (pool_def->items),
+                   static_cast<std::size_t> (pool_def->item_sz), attributes);
 
   return reinterpret_cast<osPoolId> (pool_def->data);
 }
@@ -1229,9 +1241,9 @@ osMessageCreate (const osMessageQDef_t* queue_def,
   attributes.arena_address = queue_def->queue;
   attributes.arena_size_bytes = queue_def->queue_sz;
 
-  new ((void*)queue_def->data)
-      message_queue (queue_def->name, (std::size_t)queue_def->items,
-                     (std::size_t)queue_def->item_sz, attributes);
+  new (static_cast<void*> (queue_def->data)) message_queue (
+      queue_def->name, static_cast<std::size_t> (queue_def->items),
+      static_cast<std::size_t> (queue_def->item_sz), attributes);
 
   return reinterpret_cast<osMessageQId> (queue_def->data);
 }
@@ -1273,13 +1285,14 @@ osMessagePut (osMessageQId queue_id, uint32_t info, uint32_t millisec)
           return osErrorParameter;
         }
       res = (reinterpret_cast<message_queue&> (*queue_id))
-                .send ((const char*)&info, sizeof (uint32_t), 0);
+                .send (reinterpret_cast<char*> (&info), sizeof (uint32_t), 0);
       // osOK, osErrorResource, osErrorParameter
     }
   else if (millisec == 0)
     {
       res = (reinterpret_cast<message_queue&> (*queue_id))
-                .try_send ((const char*)&info, sizeof (uint32_t), 0);
+                .try_send (reinterpret_cast<char*> (&info), sizeof (uint32_t),
+                           0);
       // osOK, osErrorResource, osErrorParameter
     }
   else
@@ -1289,10 +1302,11 @@ osMessagePut (osMessageQId queue_id, uint32_t info, uint32_t millisec)
           return osErrorParameter;
         }
       res = (reinterpret_cast<message_queue&> (*queue_id))
-                .timed_send (
-                    (const char*)&info, sizeof (uint32_t),
-                    clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)),
-                    0);
+                .timed_send (reinterpret_cast<char*> (&info),
+                             sizeof (uint32_t),
+                             clock_systick::ticks_cast (
+                                 static_cast<uint64_t> (millisec * 1000u)),
+                             0);
       // osOK, osErrorTimeoutResource, osErrorParameter
     }
 
@@ -1365,14 +1379,15 @@ osMessageGet (osMessageQId queue_id, uint32_t millisec)
           return event;
         }
       res = (reinterpret_cast<message_queue&> (*queue_id))
-                .receive ((char*)&event.value.v, sizeof (uint32_t), nullptr);
+                .receive (reinterpret_cast<char*> (&event.value.v),
+                          sizeof (uint32_t), nullptr);
       // result::event_message;
     }
   else if (millisec == 0)
     {
       res = (reinterpret_cast<message_queue&> (*queue_id))
-                .try_receive ((char*)&event.value.v, sizeof (uint32_t),
-                              nullptr);
+                .try_receive (reinterpret_cast<char*> (&event.value.v),
+                              sizeof (uint32_t), nullptr);
       // result::event_message when message;
       // result::ok when no meessage
     }
@@ -1384,10 +1399,11 @@ osMessageGet (osMessageQId queue_id, uint32_t millisec)
           return event;
         }
       res = (reinterpret_cast<message_queue&> (*queue_id))
-                .timed_receive (
-                    (char*)&event.value.v, sizeof (uint32_t),
-                    clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)),
-                    nullptr);
+                .timed_receive (reinterpret_cast<char*> (&event.value.v),
+                                sizeof (uint32_t),
+                                clock_systick::ticks_cast (
+                                    static_cast<uint64_t> (millisec * 1000u)),
+                                nullptr);
       // result::event_message when message;
       // result::event_timeout when timeout;
     }
@@ -1452,18 +1468,18 @@ osMailCreate (const osMailQDef_t* mail_def,
   memory_pool::attributes pool_attr;
   pool_attr.arena_address = mail_def->pool;
   pool_attr.arena_size_bytes = mail_def->pool_sz;
-  new ((void*)&mail_def->data->pool)
-      memory_pool (mail_def->name, (std::size_t)mail_def->items,
-                   (std::size_t)mail_def->pool_item_sz, pool_attr);
+  new (static_cast<void*> (&mail_def->data->pool)) memory_pool (
+      mail_def->name, static_cast<std::size_t> (mail_def->items),
+      static_cast<std::size_t> (mail_def->pool_item_sz), pool_attr);
 
   message_queue::attributes queue_attr;
   queue_attr.arena_address = mail_def->queue;
   queue_attr.arena_size_bytes = mail_def->queue_sz;
-  new ((void*)&mail_def->data->queue)
-      message_queue (mail_def->name, (std::size_t)mail_def->items,
-                     (std::size_t)mail_def->queue_item_sz, queue_attr);
+  new (static_cast<void*> (&mail_def->data->queue)) message_queue (
+      mail_def->name, static_cast<std::size_t> (mail_def->items),
+      static_cast<std::size_t> (mail_def->queue_item_sz), queue_attr);
 
-  return (osMailQId) (mail_def->data);
+  return static_cast<osMailQId> (mail_def->data);
 }
 
 /**
@@ -1520,8 +1536,8 @@ osMailAlloc (osMailQId mail_id, uint32_t millisec)
           return nullptr;
         }
       ret = (reinterpret_cast<memory_pool&> (mail_id->pool))
-                .timed_alloc (
-                    clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)));
+                .timed_alloc (clock_systick::ticks_cast (
+                    static_cast<uint64_t> (millisec * 1000u)));
     }
 #pragma GCC diagnostic pop
   return ret;
@@ -1586,9 +1602,10 @@ osMailPut (osMailQId mail_id, void* mail)
 
   // Validate pointer.
   memory_pool* pool = reinterpret_cast<memory_pool*> (&mail_id->pool);
-  if (((char*)mail < (char*)(pool->pool ()))
-      || (((char*)mail) >= ((char*)(pool->pool ())
-                            + pool->capacity () * pool->block_size ())))
+  if ((static_cast<char*> (mail) < static_cast<char*> (pool->pool ()))
+      || ((static_cast<char*> (mail))
+          >= (static_cast<char*> (pool->pool ())
+              + pool->capacity () * pool->block_size ())))
     {
       return osErrorValue;
     }
@@ -1597,7 +1614,7 @@ osMailPut (osMailQId mail_id, void* mail)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
   res = (reinterpret_cast<message_queue&> (mail_id->queue))
-            .try_send ((const char*)&mail, sizeof (void*), 0);
+            .try_send (reinterpret_cast<char*> (&mail), sizeof (void*), 0);
 #pragma GCC diagnostic pop
   if (res == result::ok)
     {
@@ -1651,13 +1668,15 @@ osMailGet (osMailQId mail_id, uint32_t millisec)
           return event;
         }
       res = (reinterpret_cast<message_queue&> ((mail_id->queue)))
-                .receive ((char*)&event.value.p, sizeof (void*), nullptr);
+                .receive (reinterpret_cast<char*> (&event.value.p),
+                          sizeof (void*), nullptr);
       // osEventMail for ok,
     }
   else if (millisec == 0)
     {
       res = (reinterpret_cast<message_queue&> (mail_id->queue))
-                .try_receive ((char*)&event.value.p, sizeof (void*), nullptr);
+                .try_receive (reinterpret_cast<char*> (&event.value.p),
+                              sizeof (void*), nullptr);
       // osEventMail for ok,
     }
   else
@@ -1668,10 +1687,11 @@ osMailGet (osMailQId mail_id, uint32_t millisec)
           return event;
         }
       res = (reinterpret_cast<message_queue&> (mail_id->queue))
-                .timed_receive (
-                    (char*)&event.value.p, sizeof (void*),
-                    clock_systick::ticks_cast ((uint64_t) (millisec * 1000u)),
-                    nullptr);
+                .timed_receive (reinterpret_cast<char*> (&event.value.p),
+                                sizeof (void*),
+                                clock_systick::ticks_cast (
+                                    static_cast<uint64_t> (millisec * 1000u)),
+                                nullptr);
       // osEventMail for ok, osEventTimeout
     }
 
