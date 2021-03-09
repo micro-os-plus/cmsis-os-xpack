@@ -51,6 +51,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *---------------------------------------------------------------------------*/
 
+#ifndef CMSIS_OS_H_
+#define CMSIS_OS_H_
+
+// ----------------------------------------------------------------------------
+
 /*
  * This file is part of the µOS++ distribution.
  *   (https://github.com/micro-os-plus)
@@ -97,8 +102,7 @@
  * - osMailAlloc, osMailCAlloc, osMailGet, osMailPut, osMailFree
  */
 
-#ifndef CMSIS_OS_H_
-#define CMSIS_OS_H_
+// ----------------------------------------------------------------------------
 
 /// @note MUST REMAIN UNCHANGED: @b osCMSIS identifies the CMSIS-RTOS API version.
 #define osCMSIS           0x00010002 ///< API version (main [31:16] .sub [15:0])
@@ -1326,9 +1330,13 @@ const osMailQDef_t micro_os_plus_mailQ_def_##name = { \
 
 #endif  // Mail Queues available
 
+// ----------------------------------------------------------------------------
+
 #ifdef  __cplusplus
 }
 #endif
+
+// ----------------------------------------------------------------------------
 
 #endif // CMSIS_OS_H_ 
 
