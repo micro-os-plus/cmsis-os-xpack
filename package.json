@@ -1,6 +1,6 @@
 {
   "name": "@micro-os-plus/cmsis-os",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A source xPack with the µOS++ CMSIS RTOS compatibility layer",
   "main": "",
   "scripts": {
@@ -28,7 +28,6 @@
   },
   "license": "MIT",
   "config": {},
-  "dependencies": {},
   "devDependencies": {},
   "xpack": {}
 }
