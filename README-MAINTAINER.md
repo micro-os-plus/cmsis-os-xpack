@@ -14,18 +14,22 @@ The project is hosted on GitHub:
 To clone it:
 
 ```sh
+rm -rf ~/Work/cmsis-os-xpack.git && \
+mkdir -p ~/Work && \
 git clone \
   https://github.com/micro-os-plus/cmsis-os-xpack.git \
-  cmsis-os-xpack.git
+  ~/Work/cmsis-os-xpack.git
 ```
 
 For development purposes, clone the `xpack-develop` branch:
 
 ```sh
+rm -rf ~/Work/cmsis-os-xpack.git && \
+mkdir -p ~/Work && \
 git clone \
   --branch xpack-develop \
   https://github.com/micro-os-plus/cmsis-os-xpack.git \
-  cmsis-os-xpack.git
+  ~/Work/cmsis-os-xpack.git
 ```
 
 ## Prerequisites
