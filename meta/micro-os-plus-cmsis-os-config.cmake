@@ -37,7 +37,7 @@ if (NOT TARGET micro-os-plus-cmsis-os-interface)
 
   add_library(micro-os-plus-cmsis-os-interface INTERFACE EXCLUDE_FROM_ALL)
 
-  # ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
   xpack_glob_recurse_cxx(source_files "${xpack_current_folder}/src")
   xpack_display_relative_paths("${source_files}" "${xpack_current_folder}")
@@ -56,7 +56,7 @@ if (NOT TARGET micro-os-plus-cmsis-os-interface)
       ${xpack_current_folder}/include
   )
 
-  # ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
   # Aliases.
 
   add_library(micro-os-plus::cmsis-os ALIAS micro-os-plus-cmsis-os-interface)
