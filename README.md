@@ -1,7 +1,7 @@
 [![license](https://img.shields.io/github/license/micro-os-plus/cmsis-os-xpack)](https://github.com/micro-os-plus/cmsis-os-xpack/blob/xpack/LICENSE)
 [![CI on Push](https://github.com/micro-os-plus/cmsis-os-xpack/workflows/CI%20on%20Push/badge.svg)](https://github.com/micro-os-plus/cmsis-os-xpack/actions?query=workflow%3A%22CI+on+Push%22)
 
-# A source xPack with the CMSIS RTOS compatibility layer
+# A source library xPack with the CMSIS RTOS compatibility layer
 
 This project includes files to define the CMSIS RTOS on top of µOS++.
 
@@ -18,8 +18,8 @@ For maintainer infos, please see the
 
 ## Install
 
-As a source xPacks, the easiest way to add it to a project is via **xpm**,
-but it can also be used as any Git project, for example as a submodule.
+As a source library xPacks, the easiest way to add it to a project is via
+**xpm**, but it can also be used as any Git project, for example as a submodule.
 
 ### Prerequisites
 
