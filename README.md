@@ -51,6 +51,8 @@ cd my-project
 xpm init # Unless a package.json is already present
 
 xpm install @micro-os-plus/cmsis-os@latest
+
+ls -l xpacks/micro-os-plus-cmsis-os
 ```
 
 ### Git submodule
