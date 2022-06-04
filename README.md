@@ -98,15 +98,19 @@ Support for CMSIS RTOS v2 will be added in a later release.
 
 To include this package in a project, consider the following details.
 
-#### Source folders
-
-- `src`
-
 #### Include folders
+
+The following folders should be passed to the compiler during the build:
 
 - `include`
 
 TODO: list the available headers
+
+#### Source files
+
+The source files to be added to user projects are:
+
+TODO
 
 #### Preprocessor definitions
 
