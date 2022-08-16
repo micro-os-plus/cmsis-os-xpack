@@ -15,10 +15,10 @@
     "type": "git",
     "url": "https://github.com/micro-os-plus/cmsis-os-xpack.git/"
   },
+  "homepage": "https://github.com/micro-os-plus/cmsis-os-xpack/",
   "bugs": {
     "url": "https://github.com/micro-os-plus/cmsis-os-xpack/issues/"
   },
-  "homepage": "https://github.com/micro-os-plus/cmsis-os-xpack/",
   "keywords": [
     "xpack",
     "cmsis",
@@ -34,5 +34,12 @@
   "license": "MIT",
   "config": {},
   "devDependencies": {},
-  "xpack": {}
+  "xpack": {
+    "minimumXpmRequired": "0.14.0",
+    "dependencies": {},
+    "devDependencies": {},
+    "properties": {},
+    "actions": {},
+    "buildConfigurations": {}
+  }
 }
