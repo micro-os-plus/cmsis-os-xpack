@@ -2,7 +2,7 @@
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/micro-os-plus/cmsis-os-xpack)](https://github.com/micro-os-plus/cmsis-os-xpack/tags/)
 [![npm (scoped)](https://img.shields.io/npm/v/@micro-os-plus/cmsis-os.svg?color=blue)](https://www.npmjs.com/package/@micro-os-plus/cmsis-os/)
 [![license](https://img.shields.io/github/license/micro-os-plus/cmsis-os-xpack)](https://github.com/micro-os-plus/cmsis-os-xpack/blob/xpack/LICENSE)
-[![CI on Push](https://github.com/micro-os-plus/cmsis-os-xpack/actions/workflows/CI.yml/badge.svg)](https://github.com/micro-os-plus/cmsis-os-xpack/actions/workflows/CI.yml)
+[![CI on Push](https://github.com/micro-os-plus/cmsis-os-xpack/actions/workflows/ci.yml/badge.svg)](https://github.com/micro-os-plus/cmsis-os-xpack/actions/workflows/ci.yml)
 
 # A source library xPack with the CMSIS RTOS compatibility layer
 
