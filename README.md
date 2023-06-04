@@ -61,7 +61,7 @@ xpm init # Unless a package.json is already present
 
 xpm install @micro-os-plus/cmsis-os@latest
 
-ls -l xpacks/micro-os-plus-cmsis-os
+ls -l xpacks/@micro-os-plus/cmsis-os
 ```
 
 ### Git submodule
@@ -75,7 +75,7 @@ git init # Unless already a Git project
 mkdir -p xpacks
 
 git submodule add https://github.com/micro-os-plus/cmsis-os-xpack.git \
-  xpacks/micro-os-plus-cmsis-os
+  xpacks/@micro-os-plus/cmsis-os
 ```
 
 ## Branches
